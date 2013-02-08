@@ -6,4 +6,6 @@ Distribuerte systemer
 Authors
 - Hanne
 - Tri
-- En tollervalp
+- http://imgur.com/r/aww/Cp3nG
+- http://imgur.com/r/aww/yjAK48u
+- Tollervalpen vår
