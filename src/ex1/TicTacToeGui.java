@@ -1,8 +1,27 @@
 package ex1;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.rmi.ConnectException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 
 /**
  * Graphical user interface to a Tic Tac Toe application.
@@ -30,6 +49,9 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	private String myName;
 	/** The mark used by this player ('X' or 'O') */
 	private char myMark;
+	
+	RmiInt server;
+	RmiGame client;
 
 	/**
 	 * Creates a new GUI.
@@ -181,7 +203,50 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 * Starts up a GUI without an associated player, in order
 	 * to check the appearance of the GUI.
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[])
+	{
+		String address = "localhost";
+		
+		if (args.length > 0) address = args[0];
+		
+		System.setSecurityManager(new LiberalSecurityManager());
+		
 		TicTacToeGui hisGui = new TicTacToeGui("Ottar", 'X');
+		hisGui.doServerStuff(address);
+	}
+	
+	public void doServerStuff (String address)
+	{
+		String url = "rmi://" + address + "/RmiInt";
+		
+		try {
+			server = (RmiInt) Naming.lookup(url);
+		}
+		catch (NotBoundException nbe) {
+			System.err.println("Ingen tjener re registrert");
+		}
+		catch (ConnectException ce) {
+			System.err.println("Fant ikke RMI registry på adressen " + address);
+		}
+		catch (Exception e) {
+			System.err.println("En uventet feil er oppstått");
+		}
+		
+		try {
+			client = new RmiGame(this);
+		}
+		catch (Exception e) {
+			System.err.println("Error goes here");
+		}
+		
+		// create server
+		if (server == null)
+		{
+			client.bind(url);
+		}
+		// connect to server
+		else {
+			myMark = 'O';
+		}
 	}
 }
