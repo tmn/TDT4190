@@ -220,6 +220,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		String url = "rmi://" + address + "/RmiInt";
 		
 		try {
+			// vi prøver å finne serveren
 			server = (RmiInt) Naming.lookup(url);
 		}
 		catch (NotBoundException nbe) {
@@ -233,6 +234,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		}
 		
 		try {
+			// initialiserer "clienten"
 			client = new RmiGame(this);
 		}
 		catch (Exception e) {
@@ -242,11 +244,14 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		// create server
 		if (server == null)
 		{
+			// sett "client" som server om server ikke finnes
 			client.bind(url);
 		}
 		// connect to server
 		else {
+			// sett opp "client" som motspiller til en allerede eksisterende spiller (altså, serveren)
 			myMark = 'O';
+			// do stuff here osv.
 		}
 	}
 }

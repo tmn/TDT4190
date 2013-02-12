@@ -9,10 +9,12 @@ public class RmiGame extends UnicastRemoteObject implements RmiInt {
 	
 	private TicTacToeGui GUI;
 	
+	// oppretter Rmi-ting med ref. til GUI
 	protected RmiGame(TicTacToeGui GUI) throws RemoteException {
 		this.GUI = GUI;
 	}
 	
+	// denne metoden kalles når en klient ikke finner server, og vil derfor sette seg selv som server
 	public void bind(String url) {
 		System.out.println("Server started");
 		
@@ -34,6 +36,7 @@ public class RmiGame extends UnicastRemoteObject implements RmiInt {
 		// sett meg selv som server
 	}
 
+	// sette motspillers brikker på mitt brett
 	@Override
 	public void setMark(int x, int y) throws RemoteException {
 		
