@@ -227,7 +227,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 			server = (TicTacToeInterface) Naming.lookup(url);
 		}
 		catch (NotBoundException nbe) {
-			System.err.println("Ingen tjener re registrert");
+			System.err.println("Ingen tjener er registrert");
 		}
 		catch (ConnectException ce) {
 			System.err.println("Fant ikke RMI registry på adressen " + address);
@@ -237,22 +237,21 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 		}
 		
 		try {
-			// initialiserer "clienten"
+			// initialiserer meg selv (som klienten)
 			client = new TicTacToeImpl(this);
 		}
 		catch (Exception e) {
 			System.err.println("Error goes here");
 		}
 		
-		// create server
+		// sett meg selv/"client" som server om server ikke finnes
 		if (server == null)
 		{
-			// sett "client" som server om server ikke finnes
 			client.bind(url);
 		}
 		// connect to server
 		else {
-			// sett opp "client" som motspiller til en allerede eksisterende spiller (altså, serveren)
+			// sett opp meg selv/"client" som motspiller til en allerede eksisterende spiller (altså, serveren)
 			myMark = 'O';
 			// do stuff here osv.
 		}
