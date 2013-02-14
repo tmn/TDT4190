@@ -29,7 +29,11 @@ import javax.swing.WindowConstants;
  * It also needs a routine for checking if one of the players
  * have got five marks in a row.
  */
-public class TicTacToeGui extends JFrame implements Constants, ActionListener {
+public class TicTacToeGui extends JFrame implements Constants, ActionListener
+{
+	TicTacToeInterface server;
+	TicTacToeImpl client;
+	
 	/** Textfield showing what mark you use ('X' or 'O') */
 	private JTextField id;
 	/** TextArea giving feedback to the user */
@@ -50,8 +54,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	/** The mark used by this player ('X' or 'O') */
 	private char myMark;
 	
-	RmiInt server;
-	RmiGame client;
+	
 
 	/**
 	 * Creates a new GUI.
@@ -221,7 +224,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		
 		try {
 			// vi prøver å finne serveren
-			server = (RmiInt) Naming.lookup(url);
+			server = (TicTacToeInterface) Naming.lookup(url);
 		}
 		catch (NotBoundException nbe) {
 			System.err.println("Ingen tjener re registrert");
@@ -235,7 +238,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		
 		try {
 			// initialiserer "clienten"
-			client = new RmiGame(this);
+			client = new TicTacToeImpl(this);
 		}
 		catch (Exception e) {
 			System.err.println("Error goes here");
