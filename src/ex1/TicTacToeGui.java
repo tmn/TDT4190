@@ -299,7 +299,8 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 				e.printStackTrace();
 			}
 			
-			setName("Hanne");
+			myName = "Hanne";
+			id.setText(myName + ": You are player " + myMark);
 		}
 	}
 	
