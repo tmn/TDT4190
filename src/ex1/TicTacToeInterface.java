@@ -16,5 +16,7 @@ public interface TicTacToeInterface extends Remote{
 	public void setMyTurn(boolean myTurn) throws RemoteException;
 	
 	public void setOpponent(TicTacToeInterface server) throws RemoteException;
+	
+	public void newGame() throws RemoteException;
 }
 
