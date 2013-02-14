@@ -131,17 +131,23 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	 */
 	public void squareClicked(int row, int column) {
 		// This method must be modified!
-		if (server != null && client.isMyTurn())
-		{
-			try {
-				server.setMark(row, column);
-				client.setMyTurn(false);
+		System.out.println("Tri");
+		try {
+			if (server != null && client.isMyTurn())
+			{
 				setMark(row, column, myMark);
-				// check vicktory
+				try {
+					server.setMark(row, column);
+					client.setMyTurn(false);
+					
+					// check vicktory
+				}
+				catch (RemoteException rex) {
+					rex.printStackTrace();
+				}
 			}
-			catch (RemoteException rex) {
-				rex.printStackTrace();
-			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -154,6 +160,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	public void setMark(int row, int column, char mark) {
 		board[row][column].setMark(mark);
 		repaint();
+		System.out.println("asdfasdfasdf");
 	}
 
 	/**
@@ -236,7 +243,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 		
 		System.setSecurityManager(new LiberalSecurityManager());
 		
-		TicTacToeGui hisGui = new TicTacToeGui("Ottar", 'X');
+		TicTacToeGui hisGui = new TicTacToeGui("Tri", 'X');
 		hisGui.doServerStuff(address);
 	}
 	
@@ -244,8 +251,8 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	{
 		String url = "rmi://" + address + "/RmiInt";
 		
+		// vi prøver å finne serveren
 		try {
-			// vi prøver å finne serveren
 			server = (TicTacToeInterface) Naming.lookup(url);
 		}
 		catch (NotBoundException nbe) {
@@ -258,8 +265,8 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 			System.err.println("En uventet feil er oppstått");
 		}
 		
+		// initialiserer meg selv (som klienten)
 		try {
-			// initialiserer meg selv (som klienten)
 			client = new TicTacToeImpl(this);
 		}
 		catch (Exception e) {
@@ -269,13 +276,35 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 		// sett meg selv/"client" som server om server ikke finnes
 		if (server == null)
 		{
+			System.out.println("Server not found");
 			client.bind(url);
+			try {
+				client.setMyTurn(true);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		// connect to server
+		// koble til server
 		else {
+			System.out.println("Server found");
 			// sett opp meg selv/"client" som motspiller til en allerede eksisterende spiller (altså, serveren)
 			myMark = 'O';
-			// do stuff here osv.
+			
+			try {
+				client.setMyTurn(false);
+				server.setOpponentMark(myMark);
+				server.setOpponent(client);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
+			setName("Hanne");
 		}
+	}
+	
+	public void setServer(TicTacToeInterface server)
+	{
+		this.server = server;
 	}
 }
