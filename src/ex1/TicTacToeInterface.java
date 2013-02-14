@@ -10,7 +10,11 @@ public interface TicTacToeInterface extends Remote{
 	but checked by each client seprately.. I think*/
 	
 	public void setMark(int x, int y) throws RemoteException;
-	
 	public void leaveGame() throws RemoteException;
+	public void setOpponentMark(char mark) throws RemoteException;
+	public boolean isMyTurn() throws RemoteException;
+	public void setMyTurn(boolean myTurn) throws RemoteException;
+	
+	public void setOpponent(TicTacToeInterface server) throws RemoteException;
 }
 
