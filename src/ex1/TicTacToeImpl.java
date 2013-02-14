@@ -52,8 +52,6 @@ public class TicTacToeImpl extends UnicastRemoteObject implements TicTacToeInter
 		catch (Exception e) {
 			System.err.println("MIH");
 		}
-		
-		// sett meg selv som server
 	}
 
 	// sette motspillers brikker på mitt brett
