@@ -217,8 +217,6 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 			
 			System.exit(0);
 		}
-		
-		
 	}
 
 	/**
@@ -313,5 +311,13 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	public void setServer(TicTacToeInterface server)
 	{
 		this.server = server;
+	}
+	
+	public boolean checkWinner(char mark)
+	{
+		
+		// woop here ? ish... or zomthin .... 
+		
+		return false;
 	}
 }
