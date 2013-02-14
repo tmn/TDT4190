@@ -65,13 +65,17 @@ public class TicTacToeImpl extends UnicastRemoteObject implements TicTacToeInter
 
 	@Override
 	public void leaveGame() throws RemoteException {
-		// TODO Auto-generated method stub
-		
+		GUI.server = null;
+		GUI.clearBoard();
 	}
 	@Override
 	public void setOpponent(TicTacToeInterface server) throws RemoteException {
 		GUI.setServer(server);
 		
+	}
+	@Override
+	public void newGame() throws RemoteException {
+		GUI.clearBoard();
 	}
 	
 }
