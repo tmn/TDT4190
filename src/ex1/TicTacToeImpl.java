@@ -9,19 +9,29 @@ public class TicTacToeImpl extends UnicastRemoteObject implements TicTacToeInter
 {
 	private TicTacToeGui GUI;
 	private boolean myTurn;
+	private char opponentMark;
+	
 	
 	// oppretter Rmi-ting med ref. til GUI
 	protected TicTacToeImpl(TicTacToeGui GUI) throws RemoteException {
 		this.GUI = GUI;
 		this.myTurn = false;
+		this.opponentMark = 'X';
 	}
-	
-	public void setMyTurn(boolean myTurn) {
+	@Override
+	public void setMyTurn(boolean myTurn) throws RemoteException
+	{
 		this.myTurn = myTurn;
 	}
-	
-	public boolean isMyTurn() {
+	@Override
+	public boolean isMyTurn() throws RemoteException
+	{
 		return this.myTurn;
+	}
+	@Override
+	public void setOpponentMark(char mark) throws RemoteException
+	{
+		this.opponentMark = mark;
 	}
 	
 	// denne metoden kalles når en klient ikke finner server, og vil derfor sette seg selv som server
@@ -49,12 +59,18 @@ public class TicTacToeImpl extends UnicastRemoteObject implements TicTacToeInter
 	// sette motspillers brikker på mitt brett
 	@Override
 	public void setMark(int x, int y) throws RemoteException {
-		
+		GUI.setMark(x, y, opponentMark);
+		this.setMyTurn(true);
 	}
 
 	@Override
 	public void leaveGame() throws RemoteException {
 		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setOpponent(TicTacToeInterface server) throws RemoteException {
+		GUI.setServer(server);
 		
 	}
 	
