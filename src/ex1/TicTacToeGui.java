@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -130,7 +131,18 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	 */
 	public void squareClicked(int row, int column) {
 		// This method must be modified!
-		setMark(row, column, myMark);
+		if (server != null && client.isMyTurn())
+		{
+			try {
+				server.setMark(row, column);
+				client.setMyTurn(false);
+				setMark(row, column, myMark);
+				// check vicktory
+			}
+			catch (RemoteException rex) {
+				rex.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -160,7 +172,8 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	 */
 	public void newGame() {
 		// This method must be modified!
-		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to start a new game?", "Start over?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to start a new game?", "Start over?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+		{
 			clearBoard();
 		}
 	}
@@ -181,9 +194,18 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 	 */
 	public void quit() {
 		// This method should be modified!
-		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Really quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Really quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+		{
+			try {
+				server.leaveGame();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
 			System.exit(0);
 		}
+		
+		
 	}
 
 	/**
