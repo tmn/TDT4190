@@ -39,7 +39,7 @@ public class TicTacToeImpl extends UnicastRemoteObject implements TicTacToeInter
 		System.out.println("Server started");
 		
 		try {
-			LocateRegistry.createRegistry(9999);
+			LocateRegistry.createRegistry(2708);
 		}
 		catch (RemoteException e) {
 			System.out.println("Java RMI registry already exists");
@@ -69,7 +69,6 @@ public class TicTacToeImpl extends UnicastRemoteObject implements TicTacToeInter
 	@Override
 	public void setOpponent(TicTacToeInterface server) throws RemoteException {
 		GUI.setServer(server);
-		
 	}
 	@Override
 	public void newGame() throws RemoteException {
