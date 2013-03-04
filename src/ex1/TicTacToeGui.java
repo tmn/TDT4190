@@ -140,7 +140,13 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 					server.setMark(row, column);
 					client.setMyTurn(false);
 					
-					// check vicktory
+					
+					if (checkWinner(myMark, row, column)) {
+						JOptionPane.showMessageDialog(null, "Noen vant!");
+						server.setMyTurn(false);
+						client.setMyTurn(false);
+					}
+					
 				}
 				catch (RemoteException rex) {
 					rex.printStackTrace();
@@ -313,11 +319,39 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener
 		this.server = server;
 	}
 	
-	public boolean checkWinner(char mark)
+	public boolean checkWinner(char mark, int x, int y)
 	{
-		
-		// woop here ? ish... or zomthin .... 
+		int ocount = 0;
+		int xcount = 0;
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
+				if(board[i][j].getMark() == 'X'){
+					xcount++;
+					ocount = 0;
+				}
+				
+				if(board[i][j].getMark() == 'O'){
+					ocount ++;
+					xcount = 0;
+				}
+				
+				if (board[j][i].getMark() == 'X'){
+					xcount ++;
+				}
+				
+				if(board[i][j].getMark() == ' '){
+					xcount = 0;
+					ocount = 0;
+				}
+				
+				
+				if(xcount == 5 || ocount == 5){
+					return true;
+				}
+
+			}
+		}
 		
 		return false;
-	}
+	}	
 }
